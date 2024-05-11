@@ -1,27 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken";
-
+import Assistant from "./models/model.js";
 
 mongoose.connect("mongodb://0.0.0.0:27017/", {
     dbName: "Backend"
 }).then(() => console.log("Database Connected"))
     .catch((e) => console.log(e));
-
-const CustomerSchema = new mongoose.Schema({
-  id : Number,
-  name : String,
-  mobile : Number,
-  email : String,
-  salary : Number,
-  city : String,
-  country : String,
-  department : String
-});
-
-const Customer = mongoose.model("Customer", CustomerSchema);
-    
 
 const app = express();
 app.use(express.json());
@@ -35,7 +20,7 @@ app.get("/",(req,res)=>{
 
 app.get("/users/get/all", async (req, res) => {
   try {
-    const users = await Customer.find();
+    const users = await Assistant.find();
     res.json({
       success: true,
       users: users
@@ -52,14 +37,14 @@ app.get("/users/get/all", async (req, res) => {
 app.get("/users/getid", async (req, res) => {
   const id = req.query.id;
   try {
-    const users = await Customer.find({id});
-    res.json({
+    const users = await Assistant.find({id});
+    res.status(500).cookie("abc","xyz").json({
       success: true,
       users: users
     }); 
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).cookie("abc","xyz").json({
+    res.json({
       success: false,
       error: error.message
     });
@@ -78,7 +63,7 @@ app.post("/users/post", async (req, res) => {
       country,
       department} = req.body;
   try {
-    const user = await Customer.create({
+    const user = await Assistant.create({
       id,
       name,
       mobile,
@@ -101,25 +86,26 @@ app.post("/users/post", async (req, res) => {
       error: error.message
     });
   }
+  console.log("id of the assistant inserted : "+id)
 });
 
 // PUT update customer by ID
 app.put("/users/update/:id", async (req, res) => {
-  const customerId = req.params.id;
+  const assistantId = req.params.id;
   const updatedData = req.body;
   try {
-    const updatedCustomer = await Customer.findOneAndUpdate(
-      { id: customerId },
+    const updatedAssistant = await Assistant.findOneAndUpdate(
+      { id: assistantId },
       updatedData,
       { new: true }
     );
     res.json({
       success: true,
-      message: "Customer updated successfully",
-      customer: updatedCustomer
+      message: "Assistant updated successfully",
+      assistant: updatedAssistant
     });
   } catch (error) {
-    console.error("Error updating customer:", error);
+    console.error("Error updating assistant:", error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -127,17 +113,17 @@ app.put("/users/update/:id", async (req, res) => {
   }
 });
 
-// DELETE customer by ID
+// DELETE assistant by ID
 app.delete("/users/delete/:id", async (req, res) => {
-  const customerId = req.params.id;
+  const assistantId = req.params.id;
   try {
-    await Customer.findOneAndDelete({ id: customerId });
+    await Assistant.findOneAndDelete({ id: assistantId });
     res.json({
       success: true,
-      message: "Customer deleted successfully"
+      message: "Assistant deleted successfully"
     });
   } catch (error) {
-    console.error("Error deleting customer:", error);
+    console.error("Error deleting assistant:", error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -145,12 +131,3 @@ app.delete("/users/delete/:id", async (req, res) => {
   }
 });
 
-
-
-// saurabhdeshmukh267
-
-// edRK2O3wzdljBB2K
-
-// mongodb://localhost:27017/
-
-// mongodb+srv://saurabhdeshmukh267:edRK2O3wzdljBB2K@cluster0.lp6c8dn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
