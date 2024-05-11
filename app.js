@@ -38,7 +38,7 @@ app.get("/users/getid", async (req, res) => {
   const id = req.query.id;
   try {
     const users = await Assistant.find({id});
-    res.status(500).cookie("abc","xyz").json({
+    res.status(201).cookie("abc","xyz").json({
       success: true,
       users: users
     }); 
