@@ -71,7 +71,7 @@ app.post("/users/new", async (req, res) => {
       country,
       department
     });
-    res.json({
+    res.status(201).cookie("tempi","abc").json({
       message: "Signed up successfully",
       success: true,
       user
