@@ -59,7 +59,7 @@ app.get("/users/getid", async (req, res) => {
     }); 
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).json({
+    res.status(500).cookie("abc","xyz").json({
       success: false,
       error: error.message
     });
