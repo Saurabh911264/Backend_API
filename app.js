@@ -21,7 +21,7 @@ app.get("/",(req,res)=>{
 app.get("/users/get/all", async (req, res) => {
   try {
     const users = await Assistant.find();
-    res.json({
+    res.status(200).json({
       success: true,
       users: users
     }); 
@@ -38,7 +38,7 @@ app.get("/users/getid", async (req, res) => {
   const id = req.query.id;
   try {
     const users = await Assistant.find({id});
-    res.status(201).cookie("abc","xyz").json({
+    res.status(200).cookie("abc","xyz").json({
       success: true,
       users: users
     }); 
