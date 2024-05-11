@@ -116,7 +116,7 @@ app.delete("/users/delete/:id", async (req, res) => {
   const assistantId = req.params.id;
   try {
     await Assistant.findOneAndDelete({ id: assistantId });
-    res.json({
+    res.status(204).json({
       success: true,
       message: "Assistant deleted successfully"
     });
