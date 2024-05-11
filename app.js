@@ -33,13 +33,30 @@ app.get("/",(req,res)=>{
     res.send("Nice working");
 })
 
-app.get("/users/all", async (req, res) => {
+app.get("/users/get/all", async (req, res) => {
   try {
     const users = await Customer.find();
     res.json({
       success: true,
       users: users
+    }); 
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
     });
+  }
+});
+
+app.get("/users/getid", async (req, res) => {
+  const id = req.query.id;
+  try {
+    const users = await Customer.find({id});
+    res.json({
+      success: true,
+      users: users
+    }); 
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({
@@ -50,7 +67,7 @@ app.get("/users/all", async (req, res) => {
 });
 
 
-app.post("/users/new", async (req, res) => {
+app.post("/users/post", async (req, res) => {
   console.log(req.body); // Log the request body to inspect JSON data
   const { id,
       name,
@@ -80,6 +97,48 @@ app.post("/users/new", async (req, res) => {
     console.error("Error creating user:", error);
     res.status(500).json({
       message: "Failed to sign up",
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// PUT update customer by ID
+app.put("/users/update/:id", async (req, res) => {
+  const customerId = req.params.id;
+  const updatedData = req.body;
+  try {
+    const updatedCustomer = await Customer.findOneAndUpdate(
+      { id: customerId },
+      updatedData,
+      { new: true }
+    );
+    res.json({
+      success: true,
+      message: "Customer updated successfully",
+      customer: updatedCustomer
+    });
+  } catch (error) {
+    console.error("Error updating customer:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// DELETE customer by ID
+app.delete("/users/delete/:id", async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    await Customer.findOneAndDelete({ id: customerId });
+    res.json({
+      success: true,
+      message: "Customer deleted successfully"
+    });
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    res.status(500).json({
       success: false,
       error: error.message
     });
