@@ -89,7 +89,6 @@ app.post("/users/post", async (req, res) => {
   console.log("id of the assistant inserted : "+id)
 });
 
-// PUT update customer by ID
 app.put("/users/update/:id", async (req, res) => {
   const assistantId = req.params.id;
   const updatedData = req.body;
@@ -113,7 +112,6 @@ app.put("/users/update/:id", async (req, res) => {
   }
 });
 
-// DELETE assistant by ID
 app.delete("/users/delete/:id", async (req, res) => {
   const assistantId = req.params.id;
   try {
