@@ -1,5 +1,5 @@
 to start the api enter command "npm run dev"
-there are 5 endpoints 
+#there are 5 endpoints 
 1. [localhost:4000/users/get/all  (this is the for  accessing all the users)]
 2. [localhost:4000/users/get/getid/id=<enter id>  (this is the for accessing users with a specific id)]
 3. [localhost:4000/users/post  (this is the for creating a user . we have to send a json file with all the attributes to create an entry,select post in postman)]
